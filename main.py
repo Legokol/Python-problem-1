@@ -1,19 +1,4 @@
 import game
-import pygame
 
-pygame.init()
-screen = pygame.display.set_mode((800, 600))
-clock = pygame.time.Clock()
-e = game.Enemy(100, 100)
-p = game.Player(800, 600)
-
-running = True
-while running:
-    screen.fill((200, 200, 200))
-    p.update(screen)
-    e.update(screen, p)
-    pygame.display.update()
-    clock.tick(60)
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            running = False
+g = game.Game(1000, 800)
+g.run()
