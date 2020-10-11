@@ -10,6 +10,7 @@ class Game:
         pygame.init()
         self.w, self.h = w, h
         self.screen = pygame.display.set_mode((w, h))
+        pygame.display.set_caption('A simple game')
         self.clock = pygame.time.Clock()
 
         # all the text stuff
@@ -63,7 +64,7 @@ class Game:
         self.screen.blit(self.quitButton, (self.w * 5 / 14, self.h * 24 / 35))
         self.g = self.r = 100
         x, y = pygame.mouse.get_pos()
-        if self.w * 5 / 14 < x < self.w * 9 / 14:  # checking for button interraction
+        if self.w * 5 / 14 < x < self.w * 9 / 14:  # checking for button interaction
             if self.h * 19 / 35 < y < self.h * 47 / 70:
                 self.g = 150
                 if pygame.mouse.get_pressed()[0]:

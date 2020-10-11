@@ -1,6 +1,7 @@
 import pygame
 from pygame import gfxdraw
 
+
 class Player:
     def __init__(self, x, y, v, r):
         self.pos = pygame.math.Vector2(x, y)
