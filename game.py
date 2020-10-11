@@ -19,7 +19,8 @@ class Game:
         self.scoreText = self.menuFont.render("You haven't played yet", 1, (0, 0, 0))
         self.playText = self.menuFont.render('Start', 1, (0, 0, 0))
         self.quitText = self.menuFont.render('Quit', 1, (0, 0, 0))
-        self.levelText = self.inGameFont.render('Level %i' % 1, 1, (0, 0, 0))
+        self.levelNumber = self.inGameFont.render('Level %i' % 1, 1, (0, 0, 0))
+        self.levelHighScore = self.inGameFont.render('High score: %i' % 0, 1, (0, 0, 0))
         self.playButton = pygame.Surface((self.w * 2 / 7, self.h * 9 / 70))
         self.quitButton = pygame.Surface((self.w * 2 / 7, self.h * 9 / 70))
         self.g = self.r = 100
@@ -78,7 +79,8 @@ class Game:
         self.generate()
         while self.onLevel:
             self.screen.fill((240, 240, 240))
-            self.screen.blit(self.levelText, (self.w - 1 - self.levelText.get_size()[0], 0))
+            self.screen.blit(self.levelNumber, (self.w - 1 - self.levelNumber.get_size()[0], 0))
+            self.screen.blit(self.levelHighScore, (self.w - 1 - self.levelHighScore.get_size()[0], 20))
             pygame.draw.rect(self.screen, (0, 100, 0), (0, 0, int(self.R.x), int(self.R.y)))
             pygame.draw.rect(self.screen, (0, 0, 0), (0, 0, int(self.R.x), int(self.R.y)), 2)
             self.p.update(self.screen)
@@ -87,13 +89,15 @@ class Game:
                 if enemy.collision(self.p):
                     self.onLevel = False
                     self.playing = False
-                    self.score = max(self.level - 1, self.score)
                     self.level = 1
                     self.scoreText = self.menuFont.render('High score: %i' % self.score, 1, (0, 0, 0))
             pygame.display.update()
 
             if self.p.pos.x < self.R.x + self.p.r and self.p.pos.y < self.R.y + self.p.r:
                 if self.p.pos.magnitude() < self.p.r * (math.sqrt(2) * 2.2 + 1):
+                    if self.level > self.score:
+                        self.score = self.level
+                        self.levelHighScore = self.inGameFont.render('High score: %i' % self.score, 1, (0, 0, 0))
                     self.level += 1
                     self.onLevel = False
 
@@ -106,7 +110,7 @@ class Game:
     def generate(self):
         self.p.pos.update(self.w - self.p.r, self.h - self.p.r)
         self.onLevel = True
-        self.levelText = self.inGameFont.render('Level %i' % self.level, 1, (0, 0, 0))
+        self.levelNumber = self.inGameFont.render('Level %i' % self.level, 1, (0, 0, 0))
         self.e = []
         for i in range(self.level):
             self.e.append(
